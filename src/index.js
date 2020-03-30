@@ -72,12 +72,12 @@ const cube = [
 
 // orthocraphic view volume based on camera coord system
 const orthViewVolume = {
-    l: -10, // left
-    r: 10, // right
-    b: -10, // bottom
-    t: 10, // top
-    n: -19, // near,
-    f: -20 // far
+    l: -getWidth()/2, // left
+    r: getWidth()/2, // right
+    b: -getHeight()/2, // bottom
+    t: getHeight()/2, // top
+    n: -900, // near,
+    f: -1000 // far
 };
 
 // orthographic to canonical view volume (matrix)
