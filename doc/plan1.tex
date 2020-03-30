@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[none]{hyphenat}
+
+\title{Kamera wirtualna (część 1.)}
+\author{Mateusz Ciupa 291062}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Wstęp}
+Celem pierwszej części projektu jest zaimplementowanie kamery wirtualnej w dowolnym języku.
+Kamera powinna umożliwiać dokonywania translacji (lewo, prawo, góra i dół), rotacji wokół
+trzech osi oraz operacji zoom.
+
+\section{Plan pracy}
+
+\begin{enumerate}
+    \item Ćwiczenie zostanie wykonane przy użyciu języka \textit{JavaScript} do obsługi 
+    operacji matematycznych oraz elementu \textit{Canvas} języka HTML do rysowania obiektów.
+    \item Pierwszym elementem będzie stworzenie krawędzi (dwóch punktów w układzie
+    współrzędnych kamery), z których będą składać się wyświetlane obiekty.
+    \item Punkty będą podlegać kolejnym przemianom (mnożenie punktów przez macierze):
+    \begin{itemize}
+        \item \textit{perspective projection},
+        \item \textit{orthographic transform} (aby otrzymać \textit{canonical view volume}),
+        \item \textit{viewport transformation} (dopasowanie do rozmiarów wyświetlanego obrazu).
+    \end{itemize}
+    \item Translacja, rotacja oraz zoom kamery będą dokonywane poprzez mnożenie punktów 
+    tworzących obiekty (układu współrzędnych kamery) przez odpowiednie macierze oraz wykonanie
+    operacji z wcześniejszego punktu. Operacje kamery będą obsługiwane przy pomocy klawiatury.
+\end{enumerate}
+ 
+\end{document}
