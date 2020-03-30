@@ -111,13 +111,6 @@ const Morth = morth(orthViewVolume);
 const Mper = mper(orthViewVolume);
 
 const render = () => {
-//     ctx.clearRect(0, 0, getWidth(), getHeight());
-//     theta += dtheta;
-//     points.forEach(point => {
-//         point = rotateY(point, theta);
-//         renderPoint(point);
-//     });
-//     requestAnimationFrame(render);
     const Mvp = mvp();
     const M = multiply(Mvp, Mper);
     cube.forEach(v => {
@@ -126,5 +119,66 @@ const render = () => {
         renderLine([xp/wp, yp/wp], [xq/wq, yq/wq]);
     })
 };
+
+const transform = M => {
+    ctx.clearRect(0, 0, getWidth(), getHeight());
+
+    for (let i=0; i<cube.length; i++) {
+        cube[i][0] = multiply(M, cube[i][0]);
+        cube[i][1] = multiply(M, cube[i][1]);
+    }
+
+    requestAnimationFrame(render);
+};
+
+const sin = x => Math.sin(x);
+const cos = x => Math.cos(x);
+
+const mtrans = (x, y, z) => [
+    [1, 0, 0, x],
+    [0, 1, 0, y],
+    [0, 0, 1, z],
+    [0, 0, 0, 1]
+];
+
+const mrotateX = x => [
+    [1, 0, 0, 0],
+    [0, cos(x), sin(x), 0],
+    [0, -sin(x), cos(x), 0],
+    [0, 0, 0, 1]
+];
+
+const mrotateY = x => [
+    [cos(x), 0, -sin(x), 0],
+    [0, 1, 0, 0],
+    [sin(x), 0, cos(x), 0],
+    [0, 0, 0, 1]
+];
+
+const mrotateZ = x => [
+    [cos(x), sin(x), 0, 0],
+    [-sin(x), cos(x), 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+];
+
+const mzoom = s => [
+    [s, 0, 0, 0],
+    [0, s, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+];
+
+window.addEventListener("keydown", e => {
+    if (e.key.toUpperCase() === "A") transform(mtrans(1, 0, 0));
+    else if (e.key.toUpperCase() === "D") transform(mtrans(-1, 0, 0));
+    else if (e.key.toUpperCase() === "W") transform(mtrans(0, 1, 0));
+    else if (e.key.toUpperCase() === "S") transform(mtrans(0, -1, 0));
+    else if (e.key.toUpperCase() === "Q") transform(mzoom(2));
+    else if (e.key.toUpperCase() === "E") transform(mzoom(0.5));
+    else if (e.key.toUpperCase() === "X") transform(mrotateX(0.01));
+    else if (e.key.toUpperCase() === "Y") transform(mrotateY(0.01));
+    else if (e.key.toUpperCase() === "Z") transform(mrotateZ(0.01));;
+});
 
 render();
