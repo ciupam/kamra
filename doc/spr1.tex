@@ -57,7 +57,7 @@
 
 \section{Wstęp}
 
-    Celem pierwszej części projektu jest zaimplementowanie kamery wirtualnej w dowolnym 
+    Celem pierwszej części projektu było zaimplementowanie kamery wirtualnej w dowolnym 
     języku. Kamera powinna umożliwiać dokonywania translacji (lewo, prawo, góra i dół), 
     rotacji wokół trzech osi oraz operacji zoom. Ćwiczenie zostało wykonane przy użyciu 
     języka \textbf{JavaScript} oraz elementu \textbf{Canvas} języka HTML. Materiały 
@@ -66,14 +66,14 @@
 
 \section{Opis obiektów}
 
-    Obiekty, które są przedstawiane na ekranie, są bryłami, które składają się z krawędzi
-    (dwóch punktów połączonych linią). Punkty tworzące te krawędzie są określone przez
+    Obiekty, które są rysowane na ekranie, są bryłami, które składają się z krawędzi
+    (dwóch punktów połączonych linią). Wszystkie punkty są określone przez
     współrzędne jednorodne trójwymiarowej przestrzeni (x, y, z, 1).
 
 \section{Operacje kamery}
 
-    Operacje są dokonywane poprzez mnożenie wszystkich punktów tworzących obiekty
-    przez odpowiednie macierze (4x4).
+    Operacje są wykonywane poprzez przemnożenie wszystkich punktów tworzących obiekty
+    z odpowiednimi macierzami (4x4).
 
     \begin{figure}[h]
         \includegraphics[width=\textwidth]{original}
@@ -84,12 +84,6 @@
 \newpage
 
     \subsection{Translacja}
-
-        \begin{figure}[h]
-            \includegraphics[width=\textwidth]{translation}
-            \caption{Obiekty poddane translacji \(x_t, y_t\)}
-            \centering
-        \end{figure}
     
         Macierz translacji:
 
@@ -104,6 +98,12 @@
         \end{equation}
 
         Gdzie \(x_t, y_t, z_t\) -- kolejne współrzędne translacji obiektu.
+
+        \begin{figure}[h]
+            \includegraphics[width=\textwidth]{translation}
+            \caption{Obiekty poddane translacji \(x_t, y_t\)}
+            \centering
+        \end{figure}
 
     \subsection{Rotacja}
 
@@ -189,9 +189,9 @@
 
 \newpage
 
-\section{Owzorowanie punktu 3D na powierzchni 2D}
+\section{Odwzorowanie punktu 3D na powierzchni 2D}
 
-    Odwzorowanie następowało poprzez przemnożenie punktów przez kolejne macierze:
+    Odwzorowanie następuje poprzez przemnożenie punktów z kolejnymi macierzami:
 
     \begin{enumerate}
 
