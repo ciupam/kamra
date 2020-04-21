@@ -1,2 +1,2 @@
-# kamra
-what the kamra :speak_no_evil:
+# :camera: kamra
+Fundamentals of Computer Graphics in JavaScript
