@@ -1,4 +1,4 @@
-import "./index.css";
+import "./styles/index.css";
 
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
