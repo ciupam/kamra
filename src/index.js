@@ -9,9 +9,9 @@ import {
   mzoom,
   mper,
   mvp,
-  morth,
   orthViewVolume,
 } from "./scripts/camera";
+import { getCubeFaces, getFaceCenterPoint } from "./scripts/cube";
 
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
@@ -27,231 +27,61 @@ window.addEventListener("resize", () => {
 });
 setCanvasDimensions();
 
-const renderLine = ([xa, ya], [xb, yb]) => {
+const renderFace = (
+  [xa, ya],
+  [xb, yb],
+  [xc, yc],
+  [xd, yd],
+  color = "white"
+) => {
   ctx.beginPath();
   ctx.moveTo(xa, ya);
   ctx.lineTo(xb, yb);
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = "white";
-  ctx.stroke();
+  ctx.lineTo(xc, yc);
+  ctx.lineTo(xd, yd);
+  ctx.fillStyle = color;
+  ctx.fill();
 };
 
-// normalize
-const cube = [
-  [
-    [-3, -1, -10, 1],
-    [-1, -1, -10, 1],
-  ],
-  [
-    [-3, -1, -10, 1],
-    [-3, 1, -10, 1],
-  ],
-  [
-    [-3, -1, -10, 1],
-    [-3, -1, -12, 1],
-  ],
-  [
-    [-1, -1, -10, 1],
-    [-1, -1, -12, 1],
-  ],
-  [
-    [-1, -1, -10, 1],
-    [-1, 1, -10, 1],
-  ], //
-  [
-    [-1, -1, -12, 1],
-    [-3, -1, -12, 1],
-  ],
-  [
-    [-1, -1, -12, 1],
-    [-1, 1, -12, 1],
-  ],
-  [
-    [-3, 1, -10, 1],
-    [-1, 1, -10, 1],
-  ], //
-  [
-    [-3, -1, -12, 1],
-    [-3, 1, -12, 1],
-  ],
-  [
-    [-3, 1, -10, 1],
-    [-3, 1, -12, 1],
-  ],
-  [
-    [-3, 1, -12, 1],
-    [-1, 1, -12, 1],
-  ],
-  [
-    [-1, 1, -12, 1],
-    [-1, 1, -10, 1],
-  ], //
-  [
-    [1, -1, -10, 1],
-    [3, -1, -10, 1],
-  ],
-  [
-    [1, -1, -10, 1],
-    [1, 1, -10, 1],
-  ],
-  [
-    [1, -1, -10, 1],
-    [1, -1, -12, 1],
-  ],
-  [
-    [3, -1, -10, 1],
-    [3, -1, -12, 1],
-  ],
-  [
-    [3, -1, -10, 1],
-    [3, 1, -10, 1],
-  ],
-  [
-    [3, -1, -12, 1],
-    [1, -1, -12, 1],
-  ],
-  [
-    [3, -1, -12, 1],
-    [3, 1, -12, 1],
-  ],
-  [
-    [1, 1, -10, 1],
-    [3, 1, -10, 1],
-  ],
-  [
-    [1, -1, -12, 1],
-    [1, 1, -12, 1],
-  ],
-  [
-    [1, 1, -10, 1],
-    [1, 1, -12, 1],
-  ],
-  [
-    [1, 1, -12, 1],
-    [3, 1, -12, 1],
-  ],
-  [
-    [3, 1, -12, 1],
-    [3, 1, -10, 1],
-  ], //
-  [
-    [-3, -1, -13, 1],
-    [-1, -1, -13, 1],
-  ],
-  [
-    [-3, -1, -13, 1],
-    [-3, 1, -13, 1],
-  ],
-  [
-    [-3, -1, -13, 1],
-    [-3, -1, -15, 1],
-  ],
-  [
-    [-1, -1, -13, 1],
-    [-1, -1, -15, 1],
-  ],
-  [
-    [-1, -1, -13, 1],
-    [-1, 1, -13, 1],
-  ],
-  [
-    [-1, -1, -15, 1],
-    [-3, -1, -15, 1],
-  ],
-  [
-    [-1, -1, -15, 1],
-    [-1, 1, -15, 1],
-  ],
-  [
-    [-3, 1, -13, 1],
-    [-1, 1, -13, 1],
-  ],
-  [
-    [-3, -1, -15, 1],
-    [-3, 1, -15, 1],
-  ],
-  [
-    [-3, 1, -13, 1],
-    [-3, 1, -15, 1],
-  ],
-  [
-    [-3, 1, -15, 1],
-    [-1, 1, -15, 1],
-  ],
-  [
-    [-1, 1, -15, 1],
-    [-1, 1, -13, 1],
-  ], //
-  [
-    [1, -1, -13, 1],
-    [3, -1, -13, 1],
-  ],
-  [
-    [1, -1, -13, 1],
-    [1, 1, -13, 1],
-  ],
-  [
-    [1, -1, -13, 1],
-    [1, -1, -15, 1],
-  ],
-  [
-    [3, -1, -13, 1],
-    [3, -1, -15, 1],
-  ],
-  [
-    [3, -1, -13, 1],
-    [3, 1, -13, 1],
-  ],
-  [
-    [3, -1, -15, 1],
-    [1, -1, -15, 1],
-  ],
-  [
-    [3, -1, -15, 1],
-    [3, 1, -15, 1],
-  ],
-  [
-    [1, 1, -13, 1],
-    [3, 1, -13, 1],
-  ],
-  [
-    [1, -1, -15, 1],
-    [1, 1, -15, 1],
-  ],
-  [
-    [1, 1, -13, 1],
-    [1, 1, -15, 1],
-  ],
-  [
-    [1, 1, -15, 1],
-    [3, 1, -15, 1],
-  ],
-  [
-    [3, 1, -15, 1],
-    [3, 1, -13, 1],
-  ], //
+let faces = [
+  ...getCubeFaces(2, [-2, 0, -11]),
+  ...getCubeFaces(2, [-2, 0, -14]),
+  ...getCubeFaces(2, [2, 0, -11]),
+  ...getCubeFaces(2, [2, 0, -14]),
 ];
 
-const Morth = morth(orthViewVolume);
 const Mper = mper(orthViewVolume);
+
+const len = ([x, y, z]) => Math.sqrt(x * x + y * y + z * z);
 
 const render = () => {
   const Mvp = mvp();
   const M = multiply(Mvp, Mper);
-  cube.forEach((v) => {
-    const [xp, yp, zp, wp] = multiply(M, v[0]);
-    const [xq, yq, zq, wq] = multiply(M, v[1]);
-    renderLine([xp / wp, yp / wp], [xq / wq, yq / wq]);
+  faces = faces.sort((a, b) => {
+    const ap = getFaceCenterPoint(a.face);
+    const bp = getFaceCenterPoint(b.face);
+    return len(ap) > len(bp) ? -1 : 1;
+  });
+  faces.forEach(({ face, color }) => {
+    const [xa, ya, , wa] = multiply(M, face[0]);
+    const [xb, yb, , wb] = multiply(M, face[1]);
+    const [xc, yc, , wc] = multiply(M, face[2]);
+    const [xd, yd, , wd] = multiply(M, face[3]);
+    renderFace(
+      [xa / wa, ya / wa],
+      [xb / wb, yb / wb],
+      [xc / wc, yc / wc],
+      [xd / wd, yd / wd],
+      color
+    );
   });
 };
 
 const transform = (M) => {
   ctx.clearRect(0, 0, getWidth(), getHeight());
 
-  for (let i = 0; i < cube.length; i++) {
-    cube[i][0] = multiply(M, cube[i][0]);
-    cube[i][1] = multiply(M, cube[i][1]);
-  }
+  for (let i = 0; i < faces.length; i++)
+    faces[i].face = faces[i].face.map((x) => multiply(M, x));
 
   requestAnimationFrame(render);
 };
