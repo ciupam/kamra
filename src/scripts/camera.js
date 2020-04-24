@@ -1,4 +1,4 @@
-import { sin, cos, getWindowSize } from "./util";
+import { sin, cos, getWindowSize, getWidth, getHeight } from "./util";
 
 export const mtrans = (x, y, z) => [
   [1, 0, 0, x],
